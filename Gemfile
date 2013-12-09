@@ -1,20 +1,14 @@
-source 'https://rubygems.org'
-
-gem 'encryptor'
+source 'http://rubygems.org'
+gem 'aead'
 gem 'rack-no-www'
 gem 'rdiscount'
-gem 'slim'
-gem 'sinatra', "~> 1.3.0"
-gem 'warden-github'
+gem 'sinatra'
+gem 'unicorn'
+gem 'sinatra_auth_github'
 gem 'sinatra-content-for', "~> 0.1.0"
 gem 'ghee'
 gem 'rack-cache'
 gem 'activesupport'
-gem 'addressable'
-gem 'kgio'
-gem 'dalli'
-gem 'octokit'
-gem 'rack-robustness'
 
 group :development do
   gem 'watchr'
@@ -22,11 +16,8 @@ group :development do
   gem 'foreman'
   gem 'sass'
   gem 'bourbon'
-  gem 'thin'
-  gem 'heroku'
 end
 
 group :production do
   gem 'newrelic_rpm'
-  gem 'unicorn'
 end

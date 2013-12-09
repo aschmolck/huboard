@@ -1,5 +1,6 @@
 require 'ghee'
-
+require 'aead'
+require 'securerandom'
 #require 'rack-cache'
 #require 'active_support/cache'
 require_relative 'bridge/huboard'
@@ -15,22 +16,60 @@ class Huboard
         @couch ||= Huboard::Couch.new :base_url => HuboardApplication.couchdb_server
       end
 
-      def encrypted_token
-        encrypted = encrypt_token
-        Base64.urlsafe_encode64 encrypted if encrypted
+
+      NONCE_LENGTH = 12
+
+      # we don't use aead's nonce generation because it basically keeps a
+      # counter which needs to be persisted on disk. This is probably to
+      # defend against nonce collision scenarios for extremely high nonce/s
+      # scenarios, but at the rate we're generating nonces the chance of a
+      # collission should be minuscle, namely roughly ~ `(u*n)^2/(2*(2^8)^12)`
+      # where `u` is the number of users and `n` is the number of times we
+      # generate a token for per user. So the likelihood that something goes
+      # wrong with ensuring the persistence of the state file seems much
+      # higher to me. We could cache user nonces in a running server session,
+      # to basically keep `n` close to 1, but even that seems overkill.
+      def generate_nonce
+        SecureRandom.random_bytes(NONCE_LENGTH)
+        # File.read("/dev/urandom", NONCE_LENGTH)
       end
 
-      def encrypt_token
-        Encryptor.encrypt user_token, :key => settings.secret_key if user_token
+      def cipher_class
+        AEAD::Cipher.new('AES-256-GCM')
+      end
+
+      def secret_key
+        Base64.decode64 settings.secret_key
+      end
+
+
+      def cipher
+        cipher_class.new(secret_key)
+      end
+
+      def auth_data
+         params[:user]
+      end
+
+      def encrypted_token
+        Base64.urlsafe_encode64(encrypt_token(auth_data))
+      end
+
+      def encrypt_token(auth_data)
+        return if !user_token
+        nonce = generate_nonce
+        "#{nonce}#{cipher.encrypt(nonce, auth_data, user_token)}" if user_token
       end
 
       def user_token
         github_user.token
       end
 
-      def decrypt_token(token)
-        decoded = Base64.urlsafe_decode64 token
-        Encryptor.decrypt decoded, :key => settings.secret_key
+      def decrypt_token(noncetoken, auth_data)
+        decoded = Base64.urlsafe_decode64(noncetoken)
+        nonce = decoded[0...NONCE_LENGTH]
+        token = decoded[NONCE_LENGTH..-1]
+        cipher.decrypt(nonce, auth_data, token)
       end
 
       def check_token(token)

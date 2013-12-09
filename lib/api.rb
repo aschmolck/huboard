@@ -37,9 +37,8 @@ class Huboard
     # json api
 
     get '/authorized' do
-      token = params[:token]
       begin
-        token = decrypt_token token
+        token = decrypt_token params[:token], auth_data
       rescue
        halt([401, "Bad token"])
       end
