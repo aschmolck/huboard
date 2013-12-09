@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-gem 'encryptor'
+gem 'aead'
 gem 'rack-no-www'
 gem 'rdiscount'
 gem 'sinatra'

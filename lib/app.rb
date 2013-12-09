@@ -1,7 +1,6 @@
 require 'rdiscount'
 require 'sinatra'
 require 'sinatra/content_for'
-require 'encryptor'
 require 'base64'
 require_relative "helpers"
 
@@ -85,9 +84,9 @@ module Huboard
       json(pebble.create_hook( params[:user], params[:repo], "#{socket_backend}/issues/webhook?token=#{encrypted_token}")) unless socket_backend.nil?
     end
 
-    post '/webhook' do 
+    post '/webhook' do
       begin
-        token =  decrypt_token( params[:token] )
+        token =  decrypt_token params[:token], auth_data
         ghee = gh(token)
         hub = Stint::Pebble.new(Stint::Github.new(ghee))
 
@@ -107,4 +106,3 @@ module Huboard
 
   end
 end
-
