@@ -10,9 +10,7 @@ class Huboard
     module Helpers
 
       def couch
-        puts "CLOUDANT_URL #{HuboardApplication.couchdb_server}"
-        puts ENV['RACK_ENV']
-        @couch ||= Huboard::Couch.new :base_url => HuboardApplication.couchdb_server
+        @couch ||= Huboard::Couch.new :base_url => ENV["COUCH_URL"], :database => ENV["COUCH_DATABASE"]
       end
 
       def encrypted_token
@@ -74,15 +72,7 @@ class Huboard
       end
 
       def publish(channel,event,payload)
-        return if socket_backend.nil?
-        begin
-          conn = Faraday.post do |req|
-            req.url "#{socket_backend}/hook"
-            req.headers['Content-Type'] = 'application/json'
-            req.body =  json({channel:channel, payload:{ payload:payload, event:event, correlationId: params[:correlationId] || "herpderp"},secret:settings.socket_secret})
-          end
-        rescue
-        end
+        # no op
       end
 
       def json(obj)
@@ -98,12 +88,5 @@ class Huboard
         settings.team_id
       end
     end
-
-    def self.registered(app)
-      app.helpers Huboard::Common::Helpers
-      app.use Rack::Session::Cookie, :key => 'rack.session', :path => '/', :secret => settings.session_secret
-      app.set :views, settings.root + "/views"
-    end
-
   end
 end

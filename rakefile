@@ -1,85 +1,18 @@
 require "bundler"
-Bundler.setup
+Bundler.require
 
 require 'sass'
 require 'bourbon'
-require "#{File.join(File.dirname(__FILE__),"public/css/scss/bourbon/lib/bourbon/sass_extensions.rb")}"
 
-desc "rebuild css files"
-task :css do 
-  Dir.glob("**/s{a,c}ss") { |d| Sass.load_paths << d }
+require 'sinatra/asset_pipeline/task.rb'
+require './lib/bootstrap'
+Sinatra::AssetPipeline::Task.define! Huboard::App
 
-  Dir.glob("**/s{a,c}ss") do |d|
-    Dir.glob("#{d}/*.s[ac]ss").reject {|x| File.basename(x).start_with?"_"}.each do |sass|
-      cssfile = "#{d}/../#{File.basename(sass,".*")}.min.css"
-      puts sass
-      Sass.compile_file sass, cssfile, {style: :compressed }
+namespace :couch do 
+  desc "push development documents"
+  task "dev:push" do
+    Dir.chdir "couch" do
+      `couch-docs push http://127.0.0.1:5984/huboard -d`
     end
   end
-end
-
-desc "rebuild js files"
-task :js do
-  Dir.glob("**/[sS]cripts").each do |d|
-    Dir.glob("#{d}/**/*.slicer") do |slicer|
-      sh "echo #{slicer}"
-      #sh "node calfslicer.js #{slicer} ./#{d} #{d}/#{File.basename(slicer, ".*")}.js"
-      `sh ./calfslicer #{d} #{slicer} #{d}/#{File.basename(slicer,".*")}.js`
-    end
-  end
-end
-
-
-desc "compile require modules"
-task :rjs do
-  class RequireModules
-    def initialize
-      @files = Dir.glob("**/[sS]cripts/modules/**/main.js")
-    end
-
-    def modules
-      @files.map do |f|
-        "#{File.dirname(f).gsub(/.*modules\//,"")}/#{File.basename(f,".js")}"
-      end
-    end
-
-    def baseUrl
-      File.dirname(@files[0]).gsub(/modules\/.*/,"modules")
-    end
-
-
-    def template
-      erb_template = %{
-                       var config =  {
-                          name:"marker",
-                          include: <%= modules %>,
-                          exclude: ["socket"],
-                          baseUrl: "<%= baseUrl %>",
-                          out : "<%= baseUrl %>/huboard.allmodules.js"
-                        }
-                      console.log("config",config)
-                      var requirejs = require("requirejs")
-
-                      console.log("config",requirejs)
-                      requirejs.optimize(config, function(contents){
-                        console.log(contents);
-                      }, function(err) {
- console.log(err)
-});
-      }
-      erb = ERB.new erb_template
-      erb.result binding
-    end
-  end
-  modules = RequireModules.new
-  config = modules.template
-  File.open("app.build.js","wb") { |f|
-    f.write config
-  }
-  sh "node app.build.js"
-
-end
-desc "precomile assets"
-namespace :assets do 
-  task :precompile => [:css]
 end
