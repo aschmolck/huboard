@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'warden/github'
+require 'sinatra/asset_pipeline'
 
 module Sinatra
   module Auth
@@ -17,18 +18,21 @@ module Sinatra
 
       # The default failure application, this is overridable from the extension config
       class BadAuthentication < Sinatra::Base
-        enable :raise_errors
+        enable :raise_errors 
         disable :show_exceptions
 
-        helpers do
-          def unauthorized_template
-            @unauthenticated_template ||= File.read(File.join(File.dirname(__FILE__), "views", "401.html"))
-          end
+        set :assets_precompile, %w(splash.css marketing.css application.js flex_layout.css bootstrap.css application.css ember-accounts.js board/application.js bootstrap.js *.png *.jpg *.svg *.eot *.ttf *.woff *.js).concat([/\w+\.(?!js|css).+/, /application.(css|js)$/])
+
+        register Sinatra::AssetPipeline
+
+        configure :production, :staging do 
+          sprockets.js_compressor = :uglify
+          sprockets.css_compressor = :scss
         end
 
         get '/unauthenticated' do
           status 403
-          unauthorized_template
+          erb :"401"
         end
       end
 

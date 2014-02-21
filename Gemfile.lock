@@ -1,65 +1,241 @@
-GEM
-  remote: http://rubygems.org/
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 637d5899f614a6f4d0fa2147f9b3b8b1c8b39b28
   specs:
-    activesupport (3.2.9)
-      i18n (~> 0.6)
-      multi_json (~> 1.0)
+    stripe (1.10.2)
+      json (~> 1.8.1)
+      mime-types (~> 1.25)
+      rest-client (~> 1.4)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.0.3)
+      i18n (~> 0.6, >= 0.6.4)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
     addressable (2.3.5)
     aead (1.8.0)
       macaddr (~> 1)
-    bourbon (3.0.1)
+    archive-tar-minitar (0.5.2)
+    atomic (1.1.14)
+    bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
-    faraday (0.8.8)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
+    celluloid-io (0.15.0)
+      celluloid (>= 0.15.0)
+      nio4r (>= 0.5.0)
+    chef (11.10.4)
+      chef-zero (~> 1.7, >= 1.7.2)
+      diff-lcs (~> 1.2, >= 1.2.4)
+      erubis (~> 2.7)
+      highline (~> 1.6, >= 1.6.9)
+      json (>= 1.4.4, <= 1.8.1)
+      mime-types (~> 1.16)
+      mixlib-authentication (~> 1.3)
+      mixlib-cli (~> 1.4)
+      mixlib-config (~> 2.0)
+      mixlib-log (~> 1.3)
+      mixlib-shellout (~> 1.3)
+      net-ssh (~> 2.6)
+      net-ssh-multi (~> 1.1)
+      ohai (~> 6.0)
+      pry (~> 0.9)
+      puma (~> 1.6)
+      rest-client (>= 1.0.4, < 1.7.0)
+      yajl-ruby (~> 1.1)
+    chef-zero (1.7.3)
+      hashie (~> 2.0)
+      json
+      mixlib-log (~> 1.3)
+      moneta (< 0.7.0)
+      rack
+    chunky_png (1.3.0)
+    coderay (1.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.7.0)
+    compass (0.12.2)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    daemons (1.1.9)
+    dalli (2.7.0)
+    diff-lcs (1.2.5)
+    dotenv (0.9.0)
+    erubis (2.7.0)
+    eventmachine (1.0.3)
+    excon (0.31.0)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
+    faraday (0.8.9)
       multipart-post (~> 1.2.0)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
-    foreman (0.60.2)
+    ffi (1.9.3)
+    foreman (0.63.0)
+      dotenv (>= 0.7)
       thor (>= 0.13.6)
-    ghee (0.9.10)
-      faraday (~> 0.8)
-      faraday_middleware (~> 0.9)
-      hashie (~> 1.2)
-      highline (~> 1.6.15)
-      multi_json (~> 1.3)
-    hashie (1.2.0)
-    highline (1.6.19)
-    i18n (0.6.1)
-    kgio (2.8.0)
-    macaddr (1.6.1)
-      systemu (~> 2.5.0)
-    multi_json (1.7.8)
+    formatador (0.2.4)
+    fssm (0.2.10)
+    ghee (0.9.6)
+      faraday
+      faraday_middleware
+      multi_json
+      yajl-ruby
+    guard (2.4.0)
+      formatador (>= 0.2.4)
+      listen (~> 2.1)
+      lumberjack (~> 1.0)
+      pry (>= 0.9.12)
+      thor (>= 0.18.1)
+    guard-sprockets2 (0.0.6)
+      guard
+      sprockets (~> 2.0)
+    hashie (2.0.5)
+    heroku (3.3.0)
+      heroku-api (~> 0.3.17)
+      launchy (>= 0.3.2)
+      netrc (~> 0.7.7)
+      rest-client (~> 1.6.1)
+      rubyzip
+    heroku-api (0.3.17)
+      excon (~> 0.27)
+      multi_json (~> 1.8.2)
+    highline (1.6.20)
+    hike (1.2.3)
+    i18n (0.6.9)
+    ipaddress (0.8.0)
+    json (1.8.1)
+    kgio (2.9.2)
+    launchy (2.4.2)
+      addressable (~> 2.3)
+    librarian (0.1.2)
+      highline
+      thor (~> 0.15)
+    librarian-chef (0.0.1)
+      archive-tar-minitar (>= 0.5.2)
+      chef (>= 0.10)
+      librarian (~> 0.1.0)
+    listen (2.5.0)
+      celluloid (>= 0.15.2)
+      celluloid-io (>= 0.15.0)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+    lumberjack (1.0.4)
+    macaddr (1.6.2)
+    method_source (0.8.2)
+    mime-types (1.25.1)
+    minitest (4.7.5)
+    mixlib-authentication (1.3.0)
+      mixlib-log
+    mixlib-cli (1.4.0)
+    mixlib-config (2.1.0)
+    mixlib-log (1.6.0)
+    mixlib-shellout (1.3.0)
+    moneta (0.6.0)
+    multi_json (1.8.4)
     multipart-post (1.2.0)
-    newrelic_rpm (3.5.6.55)
-    octokit (2.6.3)
-      sawyer (~> 0.5.1)
+    net-ssh (2.8.0)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
+    net-ssh-multi (1.2.0)
+      net-ssh (>= 2.6.5)
+      net-ssh-gateway (>= 1.2.0)
+    netrc (0.7.7)
+    newrelic_rpm (3.7.2.195)
+    nio4r (1.0.0)
+    octokit (2.7.1)
+      sawyer (~> 0.5.2)
+    ohai (6.20.0)
+      ipaddress
+      mixlib-cli
+      mixlib-config
+      mixlib-log
+      mixlib-shellout
+      systemu (~> 2.5.2)
+      yajl-ruby
+    pry (0.9.12.6)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    puma (1.6.3)
+      rack (~> 1.2)
     rack (1.5.2)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-no-www (0.0.2)
-    rack-protection (1.2.0)
+    rack-protection (1.5.2)
       rack
-    raindrops (0.10.0)
-    rdiscount (1.6.8)
-    sass (3.2.3)
-    sawyer (0.5.1)
+    rack-robustness (1.1.0)
+    rack-ssl (1.3.3)
+      rack
+    raindrops (0.13.0)
+    rake (10.1.1)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.3)
+      ffi (>= 0.5.0)
+    rdiscount (2.1.7)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    rubyzip (1.1.0)
+    sass (3.2.14)
+    sawyer (0.5.3)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     shotgun (0.9)
       rack (>= 1.0)
-    sinatra (1.3.3)
-      rack (~> 1.3, >= 1.3.6)
-      rack-protection (~> 1.2)
+    sinatra (1.3.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.3)
       tilt (~> 1.3, >= 1.3.3)
+    sinatra-asset-pipeline (0.3.3)
+      coffee-script
+      rake
+      sass
+      sinatra
+      sprockets
+      sprockets-helpers
+      sprockets-sass
     sinatra-content-for (0.1)
       sinatra
-    sinatra_auth_github (1.0.0)
-      sinatra (~> 1.0)
-      warden-github (~> 1.0)
+    slim (2.0.2)
+      temple (~> 0.6.6)
+      tilt (>= 1.3.3, < 2.1)
+    slop (3.4.7)
+    sprockets (2.11.0)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    sprockets-helpers (1.1.0)
+      sprockets (~> 2.0)
+    sprockets-sass (1.0.2)
+      sprockets (~> 2.0)
+      tilt (~> 1.1)
+    sucker_punch (1.0.2)
+      celluloid (~> 0.15.1)
     systemu (2.5.2)
-    thor (0.16.0)
-    tilt (1.3.3)
-    unicorn (4.6.0)
+    temple (0.6.7)
+    thin (1.6.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 1.0.0)
+      rack (>= 1.0.0)
+    thor (0.18.1)
+    thread_safe (0.1.3)
+      atomic
+    tilt (1.4.1)
+    timers (1.1.0)
+    tzinfo (0.3.38)
+    uglifier (2.4.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
+    unicorn (4.8.2)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
@@ -69,24 +245,50 @@ GEM
       octokit (> 2.1.0)
       warden (> 1.0)
     watchr (0.7)
+    yajl-ruby (1.2.0)
+    yui-compressor (0.12.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   activesupport
+  addressable
   aead
   bourbon
+  coffee-script
+  compass
+  dalli
+  dotenv
+  execjs (~> 1.4)
   foreman
   ghee
+  guard-sprockets2
+  hashie
+  heroku
+  kgio
+  librarian-chef
   newrelic_rpm
+  octokit
+  pry
   rack-cache
   rack-no-www
+  rack-robustness
+  rack-ssl
   rdiscount
   sass
   shotgun
-  sinatra
+  sinatra (~> 1.3.0)
+  sinatra-asset-pipeline
   sinatra-content-for (~> 0.1.0)
-  sinatra_auth_github
+  slim
+  sprockets
+  sprockets-helpers
+  stripe!
+  sucker_punch (~> 1.0)
+  thin
+  uglifier
   unicorn
+  warden-github
   watchr
+  yui-compressor
